@@ -3,6 +3,7 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 configfile: "config/default.yaml"
 
 include: "./rules/preprocess-datasets.smk"
+include: "./rules/turbines.smk"
 
 
 onsuccess:

@@ -10,3 +10,8 @@ all_years_a_Z_coeffs:
     memory: 50000
 turbine_output:
     memory: 50000
+turbine_metrics_per_gridcell:
+    memory: 100000
+    runtime: 240
+best_turbines_per_gridcell:
+    memory: 50000

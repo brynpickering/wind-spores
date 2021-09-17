@@ -1,6 +1,8 @@
 data-sources:
+    power-curves: "data/powercurves.csv"
     cosmo-rea2-wind-speed-coeffs: "data/cosmo_rea2_A_Z/{year}.nc"
     cosmo-rea2-coords: "data/cosmo_rea2_coords.nc"
+newa:
     height-weights:  # importance of different wind heights in fitting a log-law curve. Bigger number = better matching fit to that wind height
         50: 2
         75: 3
@@ -29,6 +31,47 @@ cosmo-rea2:
 ch-bounding-box:
     lat-range: [45.47, 48.14]
     lon-range: [5.49, 10.80]
+
+turbines:
+    enercon_e101_3000_99:
+        height: 99
+        long-name: 'Enercon E101 3000'
+    enercon_e82_2300_108:
+        height: 108
+        long-name: 'Enercon E82 2300'
+    enercon_e40_600_46:
+        height: 46
+        long-name: 'Enercon E40 600'
+    enercon_e82_2300_78:
+        height: 78
+        long-name: 'Enercon E82 2300'
+    enercon_e44_900_55:
+        height: 55
+        long-name: 'Enercon E44 900'
+    enercon_e92_2350_85:
+        height: 85
+        long-name: 'Enercon E92 2350'
+    enercon_e70_2000_100:
+        height: 100
+        long-name: 'Enercon E70 2000'
+    vestas_v112_3000_119:
+        height: 119
+        long-name: 'Vestas V112 3000'
+    enercon_e70_2300_85:
+        height: 85
+        long-name: 'Enercon E70 2300'
+    vestas_v112_3300_94:
+        height: 94
+        long-name: 'Vestas V112 3300'
+    enercon_e82_2000_78:
+        height: 78
+        long-name: 'Enercon E82 2000'
+    vestas_v90_2000_95:
+        height: 95
+        long-name: 'Vestas V90 2000'
+    enercon_e82_2000_99:
+        height: 99
+        long-name: 'Enercon E82 2000'
 
 cluster-sync:
     url: euler.ethz.ch
