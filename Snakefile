@@ -3,9 +3,11 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 configfile: "config/default.yaml"
 
 include: "./rules/preprocess-datasets.smk"
+include: "./rules/sync.smk"
 include: "./rules/turbines.smk"
 
-
+onstart:
+    shell("mkdir -p build/logs")
 onsuccess:
     if "email" in config.keys():
         shell("echo "" | mail -s 'wind-spores succeeded' {config[email]}")
