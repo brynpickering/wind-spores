@@ -1,0 +1,2 @@
+data-sources:
+    cosmo-rea2-wind-speed-coeffs: "/cluster/work/cpesm/ninjadata-cosmo-rea2/wind/cosmo-rea2-A_z/{year}.nc"
