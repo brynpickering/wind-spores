@@ -1,0 +1,9 @@
+name: shell
+channels:
+    - conda-forge
+dependencies:
+    - nco=5.0.1
+    - wget=1.20.3
+    - curl=7.77.0
+    - rsync=3.2.3
+
