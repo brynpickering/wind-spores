@@ -4,6 +4,7 @@ configfile: "config/default.yaml"
 
 include: "./rules/preprocess-datasets.smk"
 include: "./rules/sync.smk"
+include: "./rules/geo.smk"
 include: "./rules/turbines.smk"
 
 onstart:
