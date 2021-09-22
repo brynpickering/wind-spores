@@ -11,7 +11,7 @@ def slice_cosmo_dataset(path_to_input, path_to_cosmo_coords, bounding_box, cosmo
     bounded_ds = input_ds.where(
         (input_ds[cosmo_config["lat-name"]] >= bounding_box["lat-range"][0]) &
         (input_ds[cosmo_config["lat-name"]] <= bounding_box["lat-range"][1]) &
-        (input_ds[cosmo_config["lon-name"]] <= bounding_box["lon-range"][0]) &
+        (input_ds[cosmo_config["lon-name"]] >= bounding_box["lon-range"][0]) &
         (input_ds[cosmo_config["lon-name"]] <= bounding_box["lon-range"][1]),
         drop=True
     )
