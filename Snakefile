@@ -6,6 +6,7 @@ include: "./rules/preprocess-datasets.smk"
 include: "./rules/sync.smk"
 include: "./rules/geo.smk"
 include: "./rules/turbines.smk"
+include: "./rules/results.smk"
 
 onstart:
     shell("mkdir -p build/logs")

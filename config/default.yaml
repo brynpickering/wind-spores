@@ -2,6 +2,8 @@ data-sources:
     power-curves: "data/powercurves.csv"
     cosmo-rea2-wind-speed-coeffs: "data/cosmo_rea2_A_Z/{year}.nc"
     cosmo-rea2-coords: "data/cosmo_rea2_coords.nc"
+    ch-shape: "https://biogeo.ucdavis.edu/data/gadm3.6/gpkg/gadm36_CHE_gpkg.zip"
+
 newa:
     height-weights:  # importance of different wind heights in fitting a log-law curve. Bigger number = better matching fit to that wind height
         50: 2
