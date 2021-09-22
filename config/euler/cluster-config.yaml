@@ -1,17 +1,9 @@
 __default__:
-    runtime: 10
+    runtime: 100
     cores: 1
-    memory: 16000
+    memory: 50000
     output: "build/logs/{rule}.{wildcards}.log"
     name: "{rule}.{wildcards}"
-newa_one_year:
-    runtime: 60
-all_years_a_Z_coeffs:
-    memory: 50000
-turbine_output:
-    memory: 50000
 turbine_metrics_per_gridcell:
     memory: 100000
     runtime: 240
-best_turbines_per_gridcell:
-    memory: 50000
