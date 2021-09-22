@@ -72,8 +72,22 @@ rule all_years_a_Z_coeffs:
             )
         )
     output: "build/{dataset}/A-Z-coeffs.nc"
+    wildcard_constraints:
+        dataset = "((newa)|(cosmo-rea2))"
     run:
         import xarray as xr
         xr.concat(
             [xr.open_dataset(file) for file in input], dim="time"
         ).sortby("time").to_netcdf(output[0])
+
+
+rule wind_speed_at_height:
+    message: "Get wind speed at {wildcards.height}m above ground, using {wildcards.dataset} log-law coefficients"
+    input:
+        script = "scripts/coeffs_to_wind_speed.py",
+        coeffs = "build/{dataset}/A-Z-coeffs.nc"
+    conda: "../envs/default.yaml"
+    output: "build/{dataset}/wind-speed-{height}m.nc"
+    wildcard_constraints:
+        dataset = "((newa)|(cosmo-rea2))"
+    script: "../scripts/coeffs_to_wind_speed.py"
