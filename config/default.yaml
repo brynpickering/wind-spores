@@ -76,8 +76,9 @@ turbines:
         long-name: 'Enercon E82 2000'
 
 cluster-sync:
-    url: euler.ethz.ch
+    url: euler
     send-ignore: .syncignore-send
     receive-ignore: .syncignore-receive
     cluster-base-dir: ~/Develop/wind-spores/
     local-results-dir: build/cluster
+    max-size: 50m

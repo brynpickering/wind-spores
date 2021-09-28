@@ -21,6 +21,7 @@ rule receive:
         send_ignore = config["cluster-sync"]["send-ignore"],
         receive_ignore = config["cluster-sync"]["receive-ignore"],
         url = config["cluster-sync"]["url"],
+        max_size = config["cluster-sync"]["max-size"],
         cluster_base_dir = config["cluster-sync"]["cluster-base-dir"],
         cluster_build_dir = config["cluster-sync"]["cluster-base-dir"] + "/build/",
         local_results_dir = config["cluster-sync"]["local-results-dir"]
@@ -28,7 +29,7 @@ rule receive:
     shell:
         """
         rsync -avzh --progress --delete -r --exclude-from={params.receive_ignore} \
-        {params.url}:{params.cluster_build_dir} {params.local_results_dir}
+        --max-size={params.max_size} {params.url}:{params.cluster_build_dir} {params.local_results_dir}
         """
 
 
