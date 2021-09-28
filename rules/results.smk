@@ -25,3 +25,15 @@ rule plot_compare_cosmo_newa_annual_average:
         suffix = "((png)|(pdf))"
     script: "../scripts/compare_cosmo_newa_annual_average.py"
 
+
+rule plot_compare_specific_sites_cosmo_newa:
+    message: "Create {wildcards.suffix} figure to compare median capacity factors between measured and simulated datasets"
+    input:
+        script = "scripts/compare_specific_sites_cosmo_newa.py",
+        martigny_data = "build/martigny/enercon_e82_2000_99.nc",
+        st_brais_data = "build/st_brais/enercon_e82_2000_78.nc"
+    conda: "../envs/vis.yaml"
+    output: "build/results/compare_specific_sites_cosmo_newa.{suffix}"
+    wildcard_constraints:
+        suffix = "((png)|(pdf))"
+    script: "../scripts/compare_specific_sites_cosmo_newa.py"

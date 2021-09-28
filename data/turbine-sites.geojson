@@ -1,0 +1,18 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "site_id": "charrat_vs_adonis", "turbine": "Enercon E101 3000", "capacity": 3000, "height": 99, "lat": 46.98860753, "lon": 8.086947719 }, "geometry": { "type": "Point", "coordinates": [ 8.086947719, 46.98860753 ] } },
+{ "type": "Feature", "properties": { "site_id": "guetsch", "turbine": "Enercon E40 600", "capacity": 600, "height": 46, "lat": 46.65499358, "lon": 8.6158389929999988 }, "geometry": { "type": "Point", "coordinates": [ 8.615838993, 46.65499358 ] } },
+{ "type": "Feature", "properties": { "site_id": "guetsch", "turbine": "Enercon E44 900", "capacity": 900, "height": 55, "lat": 46.65499358, "lon": 8.6158389929999988 }, "geometry": { "type": "Point", "coordinates": [ 8.615838993, 46.65499358 ] } },
+{ "type": "Feature", "properties": { "site_id": "collonges", "turbine": "Enercon E70 2000", "capacity": 2000, "height": 100, "lat": 47.15980555, "lon": 7.3351388879999986 }, "geometry": { "type": "Point", "coordinates": [ 7.335138888, 47.15980555 ] } },
+{ "type": "Feature", "properties": { "site_id": "gries", "turbine": "Enercon E70 2300", "capacity": 2310, "height": 85, "lat": 46.4630486, "lon": 8.374448214 }, "geometry": { "type": "Point", "coordinates": [ 8.374448214, 46.4630486 ] } },
+{ "type": "Feature", "properties": { "site_id": "martigny", "turbine": "Enercon E82 2000", "capacity": 2000, "height": 99, "lat": 46.126722, "lon": 7.050083 }, "geometry": { "type": "Point", "coordinates": [ 7.050083, 46.126722 ] } },
+{ "type": "Feature", "properties": { "site_id": "st_brais", "turbine": "Enercon E82 2000", "capacity": 2000, "height": 78, "lat": 47.30306214, "lon": 7.1038934 }, "geometry": { "type": "Point", "coordinates": [ 7.1038934, 47.30306214 ] } },
+{ "type": "Feature", "properties": { "site_id": "lutersarni", "turbine": "Enercon E82 2300", "capacity": 2300, "height": 78, "lat": 46.96162301, "lon": 8.086622095 }, "geometry": { "type": "Point", "coordinates": [ 8.086622095, 46.96162301 ] } },
+{ "type": "Feature", "properties": { "site_id": "peuchapatte", "turbine": "Enercon E82 2300", "capacity": 2300, "height": 108, "lat": 47.20222985, "lon": 6.962777763 }, "geometry": { "type": "Point", "coordinates": [ 6.962777763, 47.20222985 ] } },
+{ "type": "Feature", "properties": { "site_id": "gries", "turbine": "Enercon E92 2350", "capacity": 2350, "height": 85, "lat": 46.4630486, "lon": 8.374448214 }, "geometry": { "type": "Point", "coordinates": [ 8.374448214, 46.4630486 ] } },
+{ "type": "Feature", "properties": { "site_id": "haldenstein", "turbine": "Vestas V112 3000", "capacity": 3000, "height": 119, "lat": 46.4630486, "lon": 8.374448214 }, "geometry": { "type": "Point", "coordinates": [ 8.374448214, 46.4630486 ] } },
+{ "type": "Feature", "properties": { "site_id": "mt_crosin", "turbine": "Vestas V112 3300", "capacity": 3300, "height": 112, "lat": 47.17584155, "lon": 7.0188928829999986 }, "geometry": { "type": "Point", "coordinates": [ 7.018892883, 47.17584155 ] } },
+{ "type": "Feature", "properties": { "site_id": "mt_crosin", "turbine": "Vestas V90 2000", "capacity": 2000, "height": 90, "lat": 47.17584155, "lon": 7.0188928829999986 }, "geometry": { "type": "Point", "coordinates": [ 7.018892883, 47.17584155 ] } }
+]
+}

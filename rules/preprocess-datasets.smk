@@ -97,3 +97,17 @@ rule wind_speed_at_height:
     wildcard_constraints:
         dataset = "((newa)|(cosmo-rea2))"
     script: "../scripts/coeffs_to_wind_speed.py"
+
+
+rule measured_cf:
+    message: "Translate measured {wildcards.turbine_id} output at {wildcards.turbine_site} to capacity factor"
+    input:
+        script = "scripts/measured_turbine_output_to_cf.py",
+        turbine_output = config["data-sources"]["turbine-output"],
+        turbines_per_site = config["data-sources"]["turbines-per-site"],
+        current_turbine_sites = config["data-sources"]["turbine-sites"]
+    conda: "../envs/geo.yaml"
+    params:
+        turbine_config = lambda wildcards: config["turbines"][wildcards.turbine_id]
+    output: "build/measured/{turbine_site}/{turbine_id}.nc"
+    script: "../scripts/measured_turbine_output_to_cf.py"
