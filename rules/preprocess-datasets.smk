@@ -42,6 +42,9 @@ rule newa_annual_a_Z_interpolation:
         height_weights = config["newa"]["height-weights"],
         x_name = config["newa"]["x-name"],
         y_name = config["newa"]["y-name"],
+        lon_name = config["newa"]["lon-name"],
+        lat_name = config["newa"]["lat-name"],
+        wind_speed_var_name = "WS"
     output: temp("build/newa/{year}-A-Z-coeffs.nc")
     conda: "../envs/default.yaml"
     script: "../scripts/log_law_coefficients.py"
@@ -88,6 +91,9 @@ rule wind_speed_at_height:
         coeffs = "build/{dataset}/A-Z-coeffs.nc"
     conda: "../envs/default.yaml"
     output: "build/{dataset}/wind-speed-{height}m.nc"
+    params:
+        lon_name = lambda wildcards: config[wildcards.dataset]["lon-name"],
+        lat_name = lambda wildcards: config[wildcards.dataset]["lat-name"]
     wildcard_constraints:
         dataset = "((newa)|(cosmo-rea2))"
     script: "../scripts/coeffs_to_wind_speed.py"

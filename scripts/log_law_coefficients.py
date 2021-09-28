@@ -3,15 +3,20 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
+import util
 
-def wind_speed_to_coeffs(path_to_input, height_weights, x_name, y_name, path_to_output):
+def wind_speed_to_coeffs(
+    path_to_input, height_weights, x_name, y_name,
+    lon_name, lat_name, wind_speed_var_name, path_to_output
+):
     height_weights_df = pd.Series(height_weights)
-    A_z_ds = get_A_z(path_to_input, x_name, y_name, height_weights_df)
+
+    A_z_ds = get_A_z(path_to_input, x_name, y_name, lon_name, lat_name, wind_speed_var_name, height_weights_df)
 
     A_z_ds.to_netcdf(path_to_output)
 
 
-def get_A_z(path_to_input, x_name, y_name, height_weights):
+def get_A_z(path_to_input, x_name, y_name, lon_name, lat_name, wind_speed_var_name, height_weights):
     """
     Apply log law regression to data for a specific year.
 
@@ -22,6 +27,11 @@ def get_A_z(path_to_input, x_name, y_name, height_weights):
     x_name, y_name : str
         names for the geographic coordinates used
         (may or may not be reprojected from original data)
+    lon_name, lat_name : str or None
+        names for the dataset dimensions describing the actual geographic coordinates
+        for every (x_name, y_name) position.
+    wind_speed_var_name : str
+        Name for the dataarray in the netcdf dataset which contains wind speed data
     height_weights : pandas.DataFrame
         index = height, columns = weight corresponding to each height.
 
@@ -32,7 +42,7 @@ def get_A_z(path_to_input, x_name, y_name, height_weights):
     """
     # Get list of subdirectories
 
-    wind_speeds = xr.open_dataset(path_to_input).WS
+    wind_speeds = xr.open_dataset(path_to_input)[wind_speed_var_name]
 
     wind_speed_stacked = wind_speeds.stack(x_y_time=[x_name, y_name, "time"])
 
@@ -40,6 +50,8 @@ def get_A_z(path_to_input, x_name, y_name, height_weights):
     A_z_ds = pd.DataFrame(
         {"A": A, "log_z": log_z}, index=wind_speed_stacked.x_y_time.to_index()
     ).to_xarray()
+
+    util.reassign_lat_lon_names(wind_speeds, A_z_ds, lat_name, lon_name)
 
     return A_z_ds
 
@@ -97,5 +109,8 @@ if __name__ == '__main__':
         height_weights=snakemake.params.height_weights,
         x_name=snakemake.params.x_name,
         y_name=snakemake.params.y_name,
+        lon_name=snakemake.params.lon_name,
+        lat_name=snakemake.params.lat_name,
+        wind_speed_var_name=snakemake.params.wind_speed_var_name,
         path_to_output=snakemake.output[0]
     )

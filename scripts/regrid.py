@@ -6,10 +6,10 @@ def regrid_dataset(
     path_to_input_dataset, path_to_output_grid, in_config, out_config, path_to_output
 ):
     input_ds = xr.open_dataset(path_to_input_dataset).rename({
-        "lat": in_config["lat-name"], "lon": in_config["lon-name"]
+        in_config["lat-name"]: "lat", in_config["lon-name"]: "lon"
     })
     new_grid = xr.open_dataset(path_to_output_grid).rename({
-        "lat": out_config["lat-name"], "lon": out_config["lon-name"]
+        out_config["lat-name"]: "lat", out_config["lon-name"]: "lon"
     })
 
     # ASSUME: bilinear regridding (recommended by xesmf)

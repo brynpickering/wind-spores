@@ -9,7 +9,8 @@ rule turbine_output:
     conda: "../envs/default.yaml"
     output: "build/{dataset_name}/{turbine_name}.nc"
     wildcard_constraints:
-        turbine_name = "|".join(config["turbines"].keys())
+        turbine_name = "|".join(config["turbines"].keys()),
+        dataset_name = "((newa)|(cosmo-rea2))"
     script: "../scripts/vwf.py"
 
 
