@@ -108,6 +108,6 @@ rule measured_cf:
         current_turbine_sites = config["data-sources"]["turbine-sites"]
     conda: "../envs/geo.yaml"
     params:
-        turbine_config = lambda wildcards: config["turbines"][wildcards.turbine_id]
+        turbine_config = lambda wildcards: config["current-turbines"][wildcards.turbine_id]
     output: "build/measured/{turbine_site}/{turbine_id}.nc"
     script: "../scripts/measured_turbine_output_to_cf.py"

@@ -7,11 +7,11 @@ rule turbine_output:
         wind_speed_coeffs = "build/{dataset_name}/A-Z-coeffs.nc",
         power_curves = config["data-sources"]["power-curves"]
     params:
-        turbine_config = lambda wildcards: config["turbines"][wildcards.turbine_name]
+        turbine_config = lambda wildcards: config["current-turbines"][wildcards.turbine_name]
     conda: "../envs/default.yaml"
     output: "build/{dataset_name}/{turbine_name}.nc"
     wildcard_constraints:
-        turbine_name = "|".join(config["turbines"].keys()),
+        turbine_name = "|".join(config["current-turbines"].keys()),
         dataset_name = "((newa)|(cosmo-rea2))"
     script: "../scripts/vwf.py"
 
@@ -29,7 +29,7 @@ rule turbine_metrics_per_gridcell:
         polygons = "build/{dataset_name}/polys.geojson",
         eligible_land = lambda wildcards: config["data-sources"]["eligible-land"] if wildcards.ismasked == "masked" else []
     params:
-        turbine_capacity = lambda wildcards: config["turbines"][wildcards.turbine_name]["capacity_mw"],
+        turbine_capacity = lambda wildcards: config["current-turbines"][wildcards.turbine_name]["capacity_mw"],
         turbine_density = config["turbine-params"]["density"],
         dataset_config = lambda wildcards: config[wildcards.dataset_name],
         comparison_quantiles = [0.1, 0.25, 0.5, 0.75, 0.9, 1],
@@ -56,7 +56,7 @@ rule turbine_metrics_per_ch_unit:
         polygons = rules.ch_shape_zip.output[0],
         eligible_land = lambda wildcards: config["data-sources"]["eligible-land"] if wildcards.ismasked == "masked" else []
     params:
-        turbine_capacity = lambda wildcards: config["turbines"][wildcards.turbine_name]["capacity_mw"],
+        turbine_capacity = lambda wildcards: config["current-turbines"][wildcards.turbine_name]["capacity_mw"],
         turbine_density = config["turbine-params"]["density"],
         dataset_config = lambda wildcards: config[wildcards.dataset_name],
         comparison_quantiles = [0.1, 0.25, 0.5, 0.75, 0.9, 1],
@@ -64,7 +64,7 @@ rule turbine_metrics_per_ch_unit:
         level = lambda wildcards: wildcards.level
     conda: "../envs/geo.yaml"
     wildcard_constraints:
-        turbine_name = "|".join(config["turbines"].keys()),
+        turbine_name = "|".join(config["current-turbines"].keys()),
         ismasked = "masked|unmasked",
         cf_or_mwh = "CF|MWh"
     output: "build/{dataset_name}-CF-gridded-to-ch-level-{level}/{turbine_name}-metrics-{cf_or_mwh}-{ismasked}.nc"
@@ -82,7 +82,7 @@ rule best_turbines_per_gridcell:
         script = "scripts/compare_turbines.py",
         turbine_metrics = lambda wildcards: expand(
             "build/{{dataset_name}}/{turbine_name}-metrics-{{cf_or_mwh}}-{{ismasked}}.nc",
-            turbine_name=config["turbines"].keys(),
+            turbine_name=config["current-turbines"].keys(),
         )
     conda: "../envs/default.yaml"
     output: "build/{dataset_name}/top-turbines-{cf_or_mwh}-{ismasked}.nc"

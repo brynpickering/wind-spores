@@ -41,7 +41,7 @@ rule plot_turbine_comparison_per_gridcell:
     params:
         plot_crs = "EPSG:3035",
         dataset_config = lambda wildcards: config[wildcards.dataset],
-        turbine_config = config["turbines"],
+        turbine_config = config["current-turbines"],
         level = None
     conda: "../envs/vis.yaml"
     wildcard_constraints:
@@ -59,7 +59,7 @@ rule plot_turbine_comparison_per_region:
     params:
         plot_crs = "EPSG:3035",
         dataset_config = lambda wildcards: config[wildcards.dataset_name],
-        turbine_config = config["turbines"],
+        turbine_config = config["current-turbines"],
         level = lambda wildcards: wildcards.level
     conda: "../envs/vis.yaml"
     wildcard_constraints:
