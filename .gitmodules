@@ -1,0 +1,3 @@
+[submodule "solar-and-wind-potentials"]
+	path = solar-and-wind-potentials
+	url = https://github.com/calliope-project/solar-and-wind-potentials.git
