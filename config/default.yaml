@@ -6,6 +6,7 @@ data-sources:
     turbine-output: "data/turbine-output.nc"
     turbines-per-site: "data/turbines-per-site.csv"
     ch-shape: "https://biogeo.ucdavis.edu/data/gadm3.6/gpkg/gadm36_CHE_gpkg.zip"
+    eligible-land: "data/eligible-land.tif"
 
 newa:
     height-weights:  # importance of different wind heights in fitting a log-law curve. Bigger number = better matching fit to that wind height
@@ -14,8 +15,8 @@ newa:
         100: 4
         150: 3
         200: 2
-    x-name: "west_east"
-    y-name: "south_north"
+    x-name: west_east
+    y-name: south_north
     lat-name: XLAT
     lon-name: XLON
     first-year: 2009
@@ -25,58 +26,84 @@ newa:
 cosmo-rea2:
     pole-latitude: 40
     pole-longitude: -170
-    x-name: "rlon"
-    y-name: "rlat"
+    x-name: rlon
+    y-name: rlat
     lat-name: RLAT
     lon-name: RLON
     first-year: 2007
     final-year: 2013
     long-name: COSMO-REA2
 
+cosmo-rea2-gridded-to-newa:
+    x-name: west_east
+    y-name: south_north
+    lat-name: XLAT
+    lon-name: XLON
+    first-year: 2009
+    final-year: 2013
+    long-name: Regridded COSMO-REA2
+
 ch-bounding-box:
     lat-range: [45.47, 48.14]
     lon-range: [5.49, 10.80]
 
+turbine-params:
+    density: 8  # [MW/km^2] from (EuropeanEnvironmentAgency:2009) | from Euro-Calliope
+
 turbines:
-    enercon_e101_3000_99:
-        height: 99
-        long-name: 'Enercon E101 3000'
-    enercon_e82_2300_108:
-        height: 108
-        long-name: 'Enercon E82 2300'
     enercon_e40_600_46:
         height: 46
         long-name: 'Enercon E40 600'
-    enercon_e82_2300_78:
-        height: 78
-        long-name: 'Enercon E82 2300'
+        capacity_mw: 0.6
     enercon_e44_900_55:
         height: 55
         long-name: 'Enercon E44 900'
-    enercon_e92_2350_85:
-        height: 85
-        long-name: 'Enercon E92 2350'
-    enercon_e70_2000_100:
-        height: 100
-        long-name: 'Enercon E70 2000'
-    vestas_v112_3000_119:
-        height: 119
-        long-name: 'Vestas V112 3000'
-    enercon_e70_2300_85:
-        height: 85
-        long-name: 'Enercon E70 2300'
-    vestas_v112_3300_94:
-        height: 94
-        long-name: 'Vestas V112 3300'
+        capacity_mw: 0.9
     enercon_e82_2000_78:
         height: 78
         long-name: 'Enercon E82 2000'
+        capacity_mw: 2
+    enercon_e82_2300_78:
+        height: 78
+        long-name: 'Enercon E82 2300'
+        capacity_mw: 2.3
+    enercon_e70_2300_85:
+        height: 85
+        long-name: 'Enercon E70 2300'
+        capacity_mw: 2.3
+    enercon_e92_2350_85:
+        height: 85
+        long-name: 'Enercon E92 2350'
+        capacity_mw: 2.35
+    vestas_v112_3300_94:
+        height: 94
+        long-name: 'Vestas V112 3300'
+        capacity_mw: 3.3
     vestas_v90_2000_95:
         height: 95
         long-name: 'Vestas V90 2000'
+        capacity_mw: 2
     enercon_e82_2000_99:
         height: 99
         long-name: 'Enercon E82 2000'
+        capacity_mw: 2
+    enercon_e101_3000_99:
+        height: 99
+        long-name: 'Enercon E101 3000'
+        capacity_mw: 3
+    enercon_e70_2000_100:
+        height: 100
+        long-name: 'Enercon E70 2000'
+        capacity_mw: 2
+    enercon_e82_2300_108:
+        height: 108
+        long-name: 'Enercon E82 2300'
+        capacity_mw: 2.3
+    vestas_v112_3000_119:
+        height: 119
+        long-name: 'Vestas V112 3000'
+        capacity_mw: 3
+
 
 cluster-sync:
     url: euler
@@ -84,4 +111,4 @@ cluster-sync:
     receive-ignore: .syncignore-receive
     cluster-base-dir: ~/Develop/wind-spores/
     local-results-dir: build/cluster
-    max-size: 50m
+    max-size: 60m

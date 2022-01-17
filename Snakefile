@@ -20,29 +20,9 @@ onerror:
 rule all:
     message: "Run entire analysis and compile report."
     input:
-        "build/report.html",
-        "build/test-report.html"
-
-
-rule run:
-    message: "Runs the demo model."
-    input: "scripts/model.py"
-    params:
-        slope = config["slope"],
-        x0 = config["x0"]
-    output: "build/results.pickle"
-    conda: "envs/default.yaml"
-    script: "scripts/model.py"
-
-
-rule plot:
-    message: "Visualises the demo results."
-    input:
-        scripts = "scripts/vis.py",
-        results = rules.run.output
-    output: "build/plot.png"
-    conda: "envs/default.yaml"
-    script: "scripts/vis.py"
+        "build/newa/top_turbines.nc",
+        "build/cosmo-rea2/top_turbines.nc"
+        "build/report.pdf"
 
 
 def pandoc_options(wildcards):
@@ -66,7 +46,8 @@ rule report:
         "report/apa.csl",
         "report/reset.css",
         "report/report.css",
-        rules.plot.output
+        "build/results/compare_cosmo_newa_annual_average_100m.pdf",
+        "build/results/compare_specific_sites_cosmo_newa.pdf",
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:

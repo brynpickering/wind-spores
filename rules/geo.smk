@@ -41,18 +41,6 @@ rule dataset_polygons:
     script: "../scripts/points_to_polys.py"
 
 
-def get_config(dataset_name, config, config_item):
-    if dataset_name in config.keys():
-        return config[dataset_name][config_item]
-    else:
-        if config_item == "long-name":
-            new_dataset_name = dataset_name.split("-gridded-to-")[0]
-            return f"Regridded {config[new_dataset_name][config_item]}"
-        else:
-            new_dataset_name = dataset_name.split("-gridded-to-")[-1]
-            return config[new_dataset_name][config_item]
-
-
 rule site_specific_data:
     message: "Interpolate gridded {wildcards.dataset} {wildcards.timeseries} data to coordinates of {wildcards.turbine_site} turbine site"
     input:
@@ -61,9 +49,9 @@ rule site_specific_data:
         modelled_data = "build/{dataset}/{timeseries}.nc",
         current_turbine_sites = config["data-sources"]["turbine-sites"]
     params:
-        x_name = lambda wildcards: get_config(wildcards.dataset, config, "x-name"),
-        y_name = lambda wildcards: get_config(wildcards.dataset, config, "y-name"),
-        dataset_name = lambda wildcards: get_config(wildcards.dataset, config, "long-name")
+        x_name = lambda wildcards: config[wildcards.dataset]["x-name"],
+        y_name = lambda wildcards: config[wildcards.dataset]["y-name"],
+        dataset_name = lambda wildcards: config[wildcards.dataset]["long-name"]
     conda: "../envs/geo.yaml"
     output: "build/{dataset}/{turbine_site}/{timeseries}.nc"
     wildcard_constraints:
@@ -104,3 +92,36 @@ rule regrid:
     conda: "../envs/geo.yaml"
     output: "build/{in_dataset_name}-gridded-to-{out_dataset_name}/{timeseries}.nc"
     script: "../scripts/regrid.py"
+
+
+rule ch_shape_zip:
+    message: "Download Swiss border shape as ZIP file"
+    params:
+        url = config["data-sources"]["ch-shape"]
+    conda: "../envs/shell.yaml"
+    output: "data/automatic/che.gpkg.zip"
+    shell: "curl -sLo {output} '{params.url}'"
+
+
+rule area_weighted_aggregate_metrics:
+    message:
+        """
+        Aggreagate {wildcards.dataset_name} gridded {wildcards.timeseries} {wildcards.cf_or_mwh} data
+        to Swiss level {wildcards.level} administrative units,
+        using a technically available area weighted average
+        """
+    input:
+        script = "scripts/aggregate_to_ch_units.py",
+        timeseries_data = "build/{dataset_name}/{timeseries}.nc",
+        polygons = "build/{dataset_name}/polys.geojson",
+        eligible_land = config["data-sources"]["eligible-land"],
+        ch_shape = rules.ch_shape_zip.output[0]
+    params:
+        dataset_config = lambda wildcards: config[wildcards.dataset_name]
+    wildcard_constraints:
+        level = "0|1|2|3",
+        cf_or_mwh = "CF|MWh",
+        dataset_name = "((newa)|(cosmo-rea2))",
+    conda: "../envs/geo.yaml"
+    output: "build/{dataset_name}-{cf_or_mwh}-gridded-to-ch-level-{level}/{timeseries}.nc"
+    script: "../scripts/aggregate_to_ch_units.py"

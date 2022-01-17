@@ -1,3 +1,4 @@
 data-sources:
     cosmo-rea2-wind-speed-coeffs: "/cluster/work/cpesm/ninjadata-cosmo-rea2/wind/cosmo-rea2-A_z/{year}.nc"
     turbine-output: "/cluster/work/apatt/brynmorp/project-wind-var/data/turbine_power_output_update_for_windspores.nc"
+    eligible-land: "/cluster/work/cpesm/brynmorp/possibility-for-electricity-autarky/build/technically-eligible-land.tif"
