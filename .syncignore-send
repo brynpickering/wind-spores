@@ -8,4 +8,7 @@ __pycache__
 .DS_Store
 build
 data/automatic
+data/eudem_slop_3035_europe.tif
+data/esm-100m-2017
+data/World_EEZ_v10_20180221
 notebooks

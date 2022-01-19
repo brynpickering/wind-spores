@@ -13,3 +13,11 @@ dependencies:
     - ipython=7.27.0
     - ipdb=0.13.9
     - cartopy=0.19.0
+    - gdal=3.2.1
+    - libgdal=3.2.1
+    - fiona=1.8.18
+    - rasterio=1.2.1
+    - rasterstats=0.14.0
+    - pip=21.3.1
+    - pip:
+        - -e ../../renewablepotentialslib

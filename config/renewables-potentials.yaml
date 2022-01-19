@@ -1,0 +1,84 @@
+renewables-potentials:
+    snakemake:
+        max-threads: 4
+    data-sources:
+        load: https://data.open-power-system-data.org/time_series/2018-06-30/time_series_60min_stacked.csv
+        nuts: https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/geojson/NUTS_RG_01M_{nuts_year}_4326.geojson
+        lau: http://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/COMM-01M-2013-SH.zip
+        degurba: http://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/DGURBA_2014_SH.zip
+        land_cover: http://due.esrin.esa.int/files/Globcover2009_V2.3_Global_.zip
+        protected_areas: https://www.protectedplanet.net/downloads/WDPA_Feb2019?type=shapefile
+        cgiar_tile: http://srtm.csi.cgiar.org/wp-content/uploads/files/srtm_5x5/TIFF/
+        gmted_tile: https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/topo/downloads/GMTED/Global_tiles_GMTED/075darcsec/mea/
+        gadm: https://biogeo.ucdavis.edu/data/gadm3.6/gpkg/gadm36_{country_code}_gpkg.zip
+        bathymetric: https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO1/data/bedrock/grid_registered/georeferenced_tiff/ETOPO1_Bed_g_geotiff.zip
+        pop: http://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_POP_GPW4_GLOBE_R2015A/GHS_POP_GPW42015_GLOBE_R2015A_54009_250/V1-0/GHS_POP_GPW42015_GLOBE_R2015A_54009_250_v1_0.zip
+        settlement_data: data/esm-100m-2017/ESM_class{esm_class}_100m.tif
+        eez_data: data/World_EEZ_v10_20180221/eez_v10.shp
+        sonnendach_statistics: https://zenodo.org/record/4091033/files/roof-statistics.csv?download=1
+        sonnendach_total_size: https://zenodo.org/record/4091033/files/total-rooftop-area-km2.txt?download=1
+        sonnendach_total_yield: https://zenodo.org/record/4091033/files/total-yield-twh.txt?download=1
+        slope: data/eudem_slop_3035_europe.tif
+    root-directory: solar-and-wind-potentials # point to the root directory if working directory is not root directory
+    crs: "EPSG:4326"
+    scope:
+        countries:
+            - "Switzerland"
+        bounds:
+            x_min: 5.49 # in degrees east
+            x_max: 10.80  # in degrees east
+            y_min: 45.47  # in degrees north
+            y_max: 48.14  # in degrees north
+
+    layers:
+        continental:
+            Switzerland: nuts0
+        national:
+            Switzerland: nuts0
+        regional:
+            Switzerland: nuts1
+        municipal:
+            Switzerland: nuts2
+    parameters:
+        maximum-installable-power-density: # this is not the yield, but the density of installed power
+            pv-on-tilted-roofs: 160 # [W/m^2] from (Gagnon:2016, Klauser:2016), i.e. 16% efficiency
+            pv-on-flat-areas: 80 # [W/m^2] from (Gagnon:2016, Klauser:2016, Wirth:2017)
+            onshore-wind: 8 # [W/m^2] from (European Environment Agency, 2009)
+            offshore-wind: 15 # [W/m^2] from (European Environment Agency, 2009)
+        availability:
+            wind-onshore: 0.97 # [-] from (European Environment Agency, 2009)
+            wind-offshore: 0.9 # [-] from (European Environment Agency, 2009)
+        ninja: # change these with caution as the renewables.ninja simulations are not in the loop, see README
+            resolution-grid: 50 # [km^2] corresponding to MERRA resolution
+            pv-performance-ratio: 0.9
+            hub-height:
+                onshore: 105 # m, median hub height of V90/2000 in Europe between 2010 and 2018
+                offshore: 87 # m, median hub height of SWT-3.6-107 in Europe between 2010 and 2018
+            turbine:
+                onshore: "vestas v90 2000" # most built between 2010 and 2018 in Europe
+                offshore: "siemens swt 3.6 107" # most built between 2010 and 2018 in Europe
+        max-slope:
+            pv: 10 # [°] (AlGarni:2018)
+            wind: 20 # [°] (McKenna:2014)
+        max-depth-offshore: -50
+        max-building-share: 0.01 # Above, a pixel cannot be used for energy farms. Equals roughly 900m2
+        max-urban-green-share: 0.01 # Above, a pixel cannot be used for energy farms. Equals roughly 900m2. Removes e.g. Berlin's Tempelhofer Feld.
+        nuts-year: 2010  # Choice of NUTS data to use from [2006, 2010, 2013, 2016, 2021]
+        max-slope-pixel-fraction-threshold: 0.9
+    scenarios:
+        technical-potential:
+            use-protected-areas: True
+            pv-on-farmland: True
+            share-farmland-used: 1.0
+            share-forest-used-for-wind: 1.0
+            share-other-land-used: 1.0
+            share-offshore-used: 1.0
+            share-rooftops-used: 1.0
+        technical-social-potential:
+            use-protected-areas: False
+            pv-on-farmland: False
+            share-farmland-used: 0.1
+            share-forest-used-for-wind: 0.1
+            share-other-land-used: 0.1
+            share-offshore-used: 0.1
+            share-rooftops-used: 1.0

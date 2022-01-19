@@ -7,6 +7,7 @@ include: "./rules/sync.smk"
 include: "./rules/geo.smk"
 include: "./rules/turbines.smk"
 include: "./rules/results.smk"
+include: "./rules/eligible-land.smk"
 
 onstart:
     shell("mkdir -p build/logs")

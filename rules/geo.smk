@@ -114,7 +114,7 @@ rule area_weighted_aggregate_metrics:
         script = "scripts/aggregate_to_ch_units.py",
         timeseries_data = "build/{dataset_name}/{timeseries}.nc",
         polygons = "build/{dataset_name}/polys.geojson",
-        eligible_land = config["data-sources"]["eligible-land"],
+        eligible_land = "build/technically-eligible-land.tif",
         ch_shape = rules.ch_shape_zip.output[0]
     params:
         dataset_config = lambda wildcards: config[wildcards.dataset_name]

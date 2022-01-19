@@ -1,7 +1,7 @@
 import geopandas as gpd
 import numpy as np
 
-ELIGIBLE_WIND_LAND_NUMBER = [110, 180]  # see https://github.com/brynpickering/possibility-for-electricity-autarky/blob/12e3b3a8be03a48a8b71e4c568ce82d31648b72a/src/technical_eligibility.py#L20-L20
+from renewablepotentialslib.eligibility import Eligibility
 
 
 def load_polygons(path_to_polygons, config, new_crs):
@@ -14,12 +14,14 @@ def load_polygons(path_to_polygons, config, new_crs):
 def get_eligible_land(polygons, path_to_eligible_land):
     import rasterio
     import rasterio.mask
+
+    eligible_wind_land = [Eligibility.ONSHORE_WIND, Eligibility.ONSHORE_WIND_AND_PV]
     with rasterio.open(path_to_eligible_land, "r") as src:
         _meta = src.meta
         polygons_to_src_crs = polygons.to_crs(_meta["crs"])
         for idx in polygons.index:
             geom = polygons_to_src_crs.loc[idx, "geometry"]
             _out, _ = rasterio.mask.mask(src, [geom], crop=True, nodata=0)
-            fraction_eligible = np.isin(_out, ELIGIBLE_WIND_LAND_NUMBER).sum() / _out.size
+            fraction_eligible = np.isin(_out, eligible_wind_land).sum() / _out.size
             polygons.loc[idx, "fraction_eligible"] = fraction_eligible
     return polygons

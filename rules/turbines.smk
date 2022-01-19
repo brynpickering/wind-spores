@@ -27,7 +27,7 @@ rule turbine_metrics_per_gridcell:
         script = "scripts/turbine_metrics.py",
         turbine_output = rules.turbine_output.output[0],
         polygons = "build/{dataset_name}/polys.geojson",
-        eligible_land = lambda wildcards: config["data-sources"]["eligible-land"] if wildcards.ismasked == "masked" else []
+        eligible_land = lambda wildcards: "build/technically-eligible-land.tif" if wildcards.ismasked == "masked" else []
     params:
         turbine_capacity = lambda wildcards: config["current-turbines"][wildcards.turbine_name]["capacity_mw"],
         turbine_density = config["turbine-params"]["density"],
@@ -54,7 +54,7 @@ rule turbine_metrics_per_ch_unit:
         script = "scripts/turbine_metrics.py",
         turbine_output = "build/{dataset_name}-CF-gridded-to-ch-level-{level}/{turbine_name}.nc",
         polygons = rules.ch_shape_zip.output[0],
-        eligible_land = lambda wildcards: config["data-sources"]["eligible-land"] if wildcards.ismasked == "masked" else []
+        eligible_land = lambda wildcards: "build/technically-eligible-land.tif" if wildcards.ismasked == "masked" else []
     params:
         turbine_capacity = lambda wildcards: config["current-turbines"][wildcards.turbine_name]["capacity_mw"],
         turbine_density = config["turbine-params"]["density"],
