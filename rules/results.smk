@@ -85,3 +85,54 @@ rule plot_annual_data_study_turbines:
     output: "build/results/compare_study_turbines_swiss_average_from_{dataset_name}-CF.{suffix}"
     script: "../scripts/compare_study_turbines.py"
 
+
+
+rule plot_clustering_tests:
+    message: """
+        Plot {wildcards.clustering_method} clustered regions at different levels of clustering,
+        based on {wildcards.turbine_name} capacity factors derived from {wildcards.dataset_name} weather data
+        """
+    input:
+        script = "scripts/compare_clustering_options.py",
+        label_df = "build/{dataset_name}/{turbine_name}-cluster-labels-{clustering_method}.csv",
+        model_region_mapping = config["data-sources"]["model-region-mapping"],
+        polygons = "build/{dataset_name}/polys.geojson",
+        ch_shape = rules.ch_shape_zip.output[0]
+    params:
+        plot_crs = "EPSG:3035",
+        dataset_config = lambda wildcards: config[wildcards.dataset_name],
+    conda: "../envs/vis.yaml"
+    wildcard_constraints:
+        suffix = "((png)|(pdf))"
+    output: "build/results/compare-{clustering_method}-clustering-levels-{dataset_name}-{turbine_name}-CF.{suffix}"
+    script: "../scripts/compare_clustering_options.py"
+
+
+rule plot_clustered_turbine_capacityfactors:
+    message: """
+        Compare {wildcards.clustering_method} clustered regions for final study turbine CFs,
+        based on capacity factors derived from {wildcards.dataset_name} weather data
+        """
+    input:
+        script = "scripts/compare_clustered_study_turbine_CF.py",
+        cf = expand(
+            "build/{{dataset_name}}-CF-gridded-to-ch-model-regions/{turbine_name}-clustered-CF-{{clustering_method}}.csv",
+            turbine_name=config["final-study-turbines"]
+        ),
+        cluster_labels = expand(
+            "build/{{dataset_name}}-CF-gridded-to-ch-model-regions/{turbine_name}-cluster-labels-{{clustering_method}}.csv",
+            turbine_name=config["final-study-turbines"]
+        ),
+        eligible_areas="build/{dataset_name}-CF-gridded-to-ch-model-regions/eligible-areas.csv",
+        model_region_mapping = config["data-sources"]["model-region-mapping"],
+        polygons = "build/{dataset_name}/polys.geojson",
+        ch_shape = rules.ch_shape_zip.output[0]
+    params:
+        plot_crs = "EPSG:3035",
+        turbine_config = config["study-turbines"],
+        dataset_config = lambda wildcards: config[wildcards.dataset_name],
+    conda: "../envs/vis.yaml"
+    wildcard_constraints:
+        suffix = "((png)|(pdf))"
+    output: "build/results/compare-{clustering_method}-clustering-{dataset_name}-CF.{suffix}",
+    script: "../scripts/compare_clustered_study_turbine_CF.py"

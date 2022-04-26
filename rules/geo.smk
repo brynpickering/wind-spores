@@ -162,3 +162,39 @@ rule area_weighted_aggregate_metrics:
     conda: "../envs/default.yaml"
     output: "build/{dataset_name}-{cf_or_mwh}-gridded-to-ch-level-{level}/{timeseries}.nc"
     script: "../scripts/aggregate_to_ch_units.py"
+
+
+rule cluster_model_regions:
+    message: "Cluster {wildcards.dataset_name} gridded {wildcards.timeseries} CF within model regions using {wildcards.clustering_method}"
+    input:
+        script = "scripts/cluster_cf_to_model_regions.py",
+        turbine_cf = "build/{dataset_name}/{timeseries}.nc",
+        eligible_areas = "build/{dataset_name}-CF-gridded-to-ch-model-regions/eligible-areas.csv",
+    params:
+        model_region_config = config["model-regions"]
+    wildcard_constraints:
+        dataset_name = "((newa)|(cosmo-rea2))",
+    conda: "../envs/default.yaml"
+    threads: 5
+    output:
+        timeseries_output = "build/{dataset_name}-CF-gridded-to-ch-model-regions/{timeseries}-clustered-CF-{clustering_method}.csv",
+        label_output = "build/{dataset_name}-CF-gridded-to-ch-model-regions/{timeseries}-cluster-labels-{clustering_method}.csv"
+    script: "../scripts/cluster_cf_to_model_regions.py"
+
+
+rule test_clusters:
+    message: """
+        Test different number of {wildcards.clustering_method} clustered regions across CH,
+        based on {wildcards.turbine_name} capacity factors derived from {wildcards.dataset_name} weather data
+        """
+    input:
+        script = "scripts/test_clustering_options.py",
+        turbine_cf = "build/{dataset_name}/{turbine_name}.nc",
+        eligible_areas = "build/{dataset_name}-CF-gridded-to-ch-level-1/eligible-areas.csv",
+        model_region_mapping = config["data-sources"]["model-region-mapping"],
+    wildcard_constraints:
+        dataset_name = "((newa)|(cosmo-rea2))",
+    conda: "../envs/default.yaml"
+    threads: 5
+    output: "build/{dataset_name}/{turbine_name}-cluster-labels-{clustering_method}.csv"
+    script: "../scripts/test_clustering_options.py"

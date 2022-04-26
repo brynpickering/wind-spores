@@ -9,3 +9,11 @@ turbine_metrics_per_gridcell:
     runtime: 240
 turbine_output_single_all_heights:
     memory: 100000
+cluster_model_regions:
+    cores: 5
+    memory: 10000
+    runtime: 240
+test_clusters:
+    cores: 5
+    memory: 20000
+    runtime: 100
