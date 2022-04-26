@@ -2,11 +2,11 @@ name: default
 channels:
     - conda-forge
 dependencies:
-    - python=3.9
-    - numpy=1.19.5
-    - pandas=1.2.0
-    - xarray=0.19.0
-    - scikit-learn=0.24.2
-    - netcdf4=1.5.6
-    - ipython=7.27.0
+    - python=3.8
+    - numpy=1.22.2
+    - pandas=1.4.0
+    - xarray=0.21.1
+    - scikit-learn=1.0.2
+    - netcdf4=1.5.8
+    - ipython=8.0.1
     - ipdb=0.13.9
