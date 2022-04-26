@@ -71,8 +71,8 @@ def int_to_deg(r):
 
 
 def get_valid_pixels_from_tech_slope_limit(r, lim, nodata):
-        _arr = np.where(r <= lim, 0, 1)  # steeper = lower integer value
-        return np.where(r == 0, nodata, _arr).astype(np.float32)  # integer value of zero = 90 degrees (i.e. NaN)
+    _arr = np.where(r <= lim, 0, 1)  # steeper = lower integer value
+    return np.where(r == 0, nodata, _arr).astype(np.float32)  # integer value of zero = 90 degrees (i.e. NaN)
 
 
 if __name__ == "__main__":

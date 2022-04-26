@@ -71,7 +71,7 @@ rule turbine_metrics_per_ch_unit:
         script = "scripts/turbine_metrics.py",
         turbine_output = "build/{dataset_name}-CF-gridded-to-ch-level-{level}/{turbine_name}.nc",
         polygons = rules.ch_shape_zip.output[0],
-        eligible_land = lambda wildcards: "build/technically-eligible-land.tif" if wildcards.ismasked == "masked" else []
+        eligible_land = lambda wildcards: "build/technically-eligible-land-wind.tif" if wildcards.ismasked == "masked" else []
     params:
         turbine_capacity = lambda wildcards: get_capacity_mw(wildcards),
         turbine_density = config["turbine-params"]["density"],

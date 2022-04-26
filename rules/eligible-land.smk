@@ -9,20 +9,20 @@ use rule * from renewablespotentials
 
 rule category_of_technical_eligibility:
     message:
-        "Determine upper bound surface eligibility for renewables based on land cover, slope, bathymetry, and settlements."
+        """
+        Determine per-pixel surface eligibility share for {wildcards.tech}
+        based on land cover, slope, and settlements.
+        """
     input:
         src = "scripts/technical_eligibility.py",
         land_cover = rules.land_cover_in_europe.output[0],
-        slope_pv = "build/slope-europe-pv.tif",
-        slope_wind = "build/slope-europe-wind.tif",
+        slope = "build/slope-europe-{tech}.tif",
         building_share = rules.settlements.output.buildings,
         urban_green_share = rules.settlements.output.urban_greens
     params:
-        max_building_share = config["renewables-potentials"]["parameters"]["max-building-share"],
-        max_urban_green_share = config["renewables-potentials"]["parameters"]["max-urban-green-share"],
-        slope_threshold = config["renewables-potentials"]["parameters"]["max-slope-pixel-fraction-threshold"]
-    output:
-        "build/technically-eligible-land.tif"
+        max_building_share = config["turbine-params"]["land-exclusion-thresholds"]["max-building-share"],
+        max_urban_green_share = config["turbine-params"]["land-exclusion-thresholds"]["max-urban-green-share"],
+    output: "build/technically-eligible-land-{tech}.tif"
     conda: "../envs/geo.yaml"
     script: "../scripts/technical_eligibility.py"
 

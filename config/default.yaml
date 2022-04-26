@@ -49,7 +49,10 @@ ch-bounding-box:
     lon-range: [5.49, 10.80]
 
 turbine-params:
-    density: 8  # [MW/km^2] from (EuropeanEnvironmentAgency:2009) | from Euro-Calliope
+    density: 8  # [MW/km^2] from (EuropeanEnvironmentAgency:2009)rom Euro-Calliope
+    land-exclusion-thresholds:
+        max-building-share: 0.1 # Above, a pixel cannot be used for energy farms. Based on maximum pixel share in which existing sites are found in CH.
+        max-urban-green-share: 0.33 # Above, a pixel cannot be used for energy farms. Based on maximum pixel share in which existing sites are found in CH.
 
 current-turbines:
     enercon_e40_600_46:

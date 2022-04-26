@@ -103,25 +103,45 @@ rule ch_shape_zip:
     shell: "curl -sLo {output} '{params.url}'"
 
 
+rule eligible_area_per_gridcell_and_ch_level:
+    message:
+        """
+        Assign eligible wind areas to each {wildcards.dataset_name} grid and
+        Swiss level {wildcards.level} administrative unit
+        """
+    input:
+        script = "scripts/eligible_area_per_gridcell_and_region.py",
+        polygons = "build/{dataset_name}/polys.geojson",
+        eligible_land = "build/technically-eligible-land-wind.tif",
+        ch_shape = rules.ch_shape_zip.output[0]
+    params:
+        dataset_config = lambda wildcards: config[wildcards.dataset_name]
+    wildcard_constraints:
+        level = "0|1|2|3",
+        dataset_name = "((newa)|(cosmo-rea2))"
+    conda: "../envs/geo.yaml"
+    output: "build/{dataset_name}-{cf_or_mwh}-gridded-to-ch-level-{level}/eligible-areas.csv"
+    script: "../scripts/eligible_area_per_gridcell_and_region.py"
+
+
 rule area_weighted_aggregate_metrics:
     message:
         """
-        Aggreagate {wildcards.dataset_name} gridded {wildcards.timeseries} {wildcards.cf_or_mwh} data
+        Aggregate {wildcards.dataset_name} gridded {wildcards.timeseries} {wildcards.cf_or_mwh} data
         to Swiss level {wildcards.level} administrative units,
         using a technically available area weighted average
         """
     input:
         script = "scripts/aggregate_to_ch_units.py",
         timeseries_data = "build/{dataset_name}/{timeseries}.nc",
-        polygons = "build/{dataset_name}/polys.geojson",
-        eligible_land = "build/technically-eligible-land.tif",
-        ch_shape = rules.ch_shape_zip.output[0]
+        eligible_areas = rules.eligible_area_per_gridcell_and_ch_level.output[0],
     params:
         dataset_config = lambda wildcards: config[wildcards.dataset_name]
     wildcard_constraints:
         level = "0|1|2|3",
         cf_or_mwh = "CF|MWh",
         dataset_name = "((newa)|(cosmo-rea2))",
-    conda: "../envs/geo.yaml"
+        timeseries = "[^/]*"
+    conda: "../envs/default.yaml"
     output: "build/{dataset_name}-{cf_or_mwh}-gridded-to-ch-level-{level}/{timeseries}.nc"
     script: "../scripts/aggregate_to_ch_units.py"

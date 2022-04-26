@@ -1,7 +1,4 @@
 import geopandas as gpd
-import numpy as np
-
-from renewablepotentialslib.eligibility import Eligibility
 
 
 def load_polygons(path_to_polygons, config, new_crs):
@@ -14,14 +11,22 @@ def load_polygons(path_to_polygons, config, new_crs):
 def get_eligible_land(polygons, path_to_eligible_land):
     import rasterio
     import rasterio.mask
+    from rasterstats import zonal_stats
 
-    eligible_wind_land = [Eligibility.ONSHORE_WIND, Eligibility.ONSHORE_WIND_AND_PV]
     with rasterio.open(path_to_eligible_land, "r") as src:
         _meta = src.meta
         polygons_to_src_crs = polygons.to_crs(_meta["crs"])
-        for idx in polygons.index:
-            geom = polygons_to_src_crs.loc[idx, "geometry"]
-            _out, _ = rasterio.mask.mask(src, [geom], crop=True, nodata=0)
-            fraction_eligible = np.isin(_out, eligible_wind_land).sum() / _out.size
-            polygons.loc[idx, "fraction_eligible"] = fraction_eligible
+        potentials = zonal_stats(
+            polygons_to_src_crs,
+            src.read(1),
+            affine=_meta["transform"],
+            stats="mean",
+            nodata=-999
+        )
+        average_land_area_share = [stat["mean"] for stat in potentials]
+        polygons["fraction_eligible"] = average_land_area_share
+
     return polygons
+
+def load_ch_shapes(path_to_ch_shapes, level):
+    return gpd.read_file(f"zip://{path_to_ch_shapes}!gadm36_CHE.gpkg", layer=int(level))
