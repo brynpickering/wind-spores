@@ -6,10 +6,11 @@ import util
 
 
 def speed_to_capacityfactor(
-    path_to_wind_speed_coeffs, path_to_power_curves, turbine_name, turbine_config, path_to_output
+    path_to_wind_speed_coeffs, path_to_power_curves,
+    turbine_name, turbine_config, height, path_to_output
 ):
     wind_speed_coeffs = xr.open_dataset(path_to_wind_speed_coeffs)
-    wind_speed = util.coeffs_to_wind_speed(wind_speed_coeffs, turbine_config["height"])
+    wind_speed = util.coeffs_to_wind_speed(wind_speed_coeffs, height)
 
     power_curve = pd.read_csv(path_to_power_curves, index_col=0).loc[:, turbine_config["long-name"]]
 
@@ -34,5 +35,6 @@ if __name__ == "__main__":
         path_to_power_curves=snakemake.input.power_curves,
         turbine_name=snakemake.wildcards.turbine_name,
         turbine_config=snakemake.params.turbine_config,
+        height=snakemake.params.height,
         path_to_output=snakemake.output[0]
     )

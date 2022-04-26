@@ -35,18 +35,18 @@ rule plot_turbine_comparison_per_gridcell:
     message: "Plot top turbines per {wildcards.dataset} gridcell"
     input:
         script = "scripts/compare_best_turbines_per_gridcell.py",
-        top_turbines = "build/{dataset}/top-turbines-CF-unmasked.nc",
+        top_turbines = "build/{dataset}/top-{turbine_group}-turbines/CF-unmasked.nc",
         ch_shape = rules.ch_shape_zip.output[0],
         polys = "build/{dataset}/polys.geojson",
     params:
         plot_crs = "EPSG:3035",
         dataset_config = lambda wildcards: config[wildcards.dataset],
-        turbine_config = config["current-turbines"],
+        turbine_config = lambda wildcards: config[f"{wildcards.turbine_group}-turbines"],
         level = None
     conda: "../envs/vis.yaml"
     wildcard_constraints:
         suffix = "((png)|(pdf))"
-    output: "build/results/compare_top_turbines_per_{dataset}_gridcell.{suffix}"
+    output: "build/results/compare_top_{turbine_group}_turbines_per_{dataset}_gridcell.{suffix}"
     script: "../scripts/compare_best_turbines_per_gridcell.py"
 
 
@@ -54,15 +54,34 @@ rule plot_turbine_comparison_per_region:
     message: "Plot top turbines per Swiss level {wildcards.level} administrative units, based on {wildcards.cf_or_mwh} derived from {wildcards.ismasked} {wildcards.dataset_name} weather data"
     input:
         script = "scripts/compare_best_turbines_per_gridcell.py",
-        top_turbines = "build/{dataset_name}-CF-gridded-to-ch-level-{level}/top-turbines-{cf_or_mwh}-{ismasked}.nc",
+        top_turbines = "build/{dataset_name}-CF-gridded-to-ch-level-{level}/top-{turbine_group}-turbines/{cf_or_mwh}-{ismasked}.nc",
         ch_shape = rules.ch_shape_zip.output[0],
     params:
         plot_crs = "EPSG:3035",
         dataset_config = lambda wildcards: config[wildcards.dataset_name],
-        turbine_config = config["current-turbines"],
+        turbine_config = lambda wildcards: config[f"{wildcards.turbine_group}-turbines"],
         level = lambda wildcards: wildcards.level
     conda: "../envs/vis.yaml"
     wildcard_constraints:
         suffix = "((png)|(pdf))"
-    output: "build/results/compare_top_turbines_per_CH_level{level}_from_{dataset_name}-{cf_or_mwh}-{ismasked}.{suffix}"
+    output: "build/results/compare_top_{turbine_group}_turbines_per_CH_level{level}_from_{dataset_name}-{cf_or_mwh}-{ismasked}.{suffix}"
     script: "../scripts/compare_best_turbines_per_gridcell.py"
+
+
+rule plot_annual_data_study_turbines:
+    message: "Plot swiss averaged data for study turbines, based on Capacity factors derived from {wildcards.dataset_name} weather data"
+    input:
+        script = "scripts/compare_study_turbines.py",
+        cfs = expand(
+            "build/{{dataset_name}}-CF-gridded-to-ch-level-0/{turbine_name}.nc",
+            turbine_name=get_turbine_height_combos(config["study-heights"])
+        ),
+        power_curves = config["data-sources"]["power-curves-single-turbine"]
+    params:
+        turbine_config = config["study-turbines"]
+    conda: "../envs/vis.yaml"
+    wildcard_constraints:
+        suffix = "((png)|(pdf))"
+    output: "build/results/compare_study_turbines_swiss_average_from_{dataset_name}-CF.{suffix}"
+    script: "../scripts/compare_study_turbines.py"
+

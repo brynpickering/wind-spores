@@ -2,6 +2,7 @@ import logging
 
 import pandas as pd
 import xarray as xr
+import numpy as np
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -80,11 +81,18 @@ def set_metric_titles(ax, g):
 def plot_compare_turbines(ax, g, polys, turbine_config, ch_shape, top_turbines):
 
     def _turbine_name(short_name):
-        return (
-            f"{turbine_config[short_name]['long-name']} @ "
-            f"{turbine_config[short_name]['height']}m"
-        )
-    colours = get_cmap(turbine_config)
+        if short_name not in turbine_config.keys():
+            short_name, height = short_name.rsplit("_", 1)
+            return (
+                f"{turbine_config[short_name]['long-name']} @ "
+                f"{height}m"
+            )
+        else:
+            return (
+                f"{turbine_config[short_name]['long-name']} @ "
+                f"{turbine_config[short_name]['height']}m"
+            )
+    colours = get_cmap(turbine_config, top_turbines)
 
     _row = 0
     _column = 1
@@ -146,11 +154,29 @@ def add_legend(ax, g, colours, turbine_namer):
     )
 
 
-def get_cmap(turbine_config):
+def get_cmap(turbine_config, top_turbines):
     colours = {}
+
+    # study turbine config doesn't differentiate by turbine height
+    # so we link the 'top turbines' which have heights in their names
+    # with the relevant config item
+    unique_config_items = [
+        i for i in np.unique(top_turbines.to_array()) if i != ""
+    ]
+    if len(unique_config_items) > len(turbine_config.keys()):
+        colour_keys = []
+        for i in turbine_config.keys():
+            colour_keys.extend([
+                j for j in sorted(unique_config_items)
+                if i in j
+            ])
+    else:
+        colour_keys = turbine_config.keys()
+
+    palette = sns.color_palette("magma", n_colors=len(colour_keys))
     i = 0
-    for k in turbine_config.keys():
-        colours[k] = sns.color_palette("magma", n_colors=len(turbine_config.keys()))[i]
+    for k in colour_keys:
+        colours[k] = palette[i]
         i += 1
     return colours
 

@@ -7,3 +7,5 @@ __default__:
 turbine_metrics_per_gridcell:
     memory: 100000
     runtime: 240
+turbine_output_single_all_heights:
+    memory: 100000

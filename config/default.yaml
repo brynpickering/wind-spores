@@ -1,5 +1,6 @@
 data-sources:
-    power-curves: "data/powercurves.csv"
+    power-curves: "data/powercurves_single_turbine.csv" #"data/powercurves.csv"
+    power-curves-single-turbine: "data/powercurves_single_turbine.csv"
     cosmo-rea2-wind-speed-coeffs: "data/cosmo_rea2_A_Z/{year}.nc"
     cosmo-rea2-coords: "data/cosmo_rea2_coords.nc"
     turbine-sites: "data/turbine-sites.geojson"
@@ -129,6 +130,9 @@ study-turbines:
             max: 75
         long-name: Enercon E53 800
         capacity_mw: 0.8
+
+study-heights: [60, 80, 100, 120]
+final-study-turbines: [vestas_v110_2000_120, enercon_e82_3000_60, enercon_e53_800_60]
 
 cluster-sync:
     url: euler
