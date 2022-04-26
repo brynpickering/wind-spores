@@ -124,6 +124,23 @@ rule eligible_area_per_gridcell_and_ch_level:
     script: "../scripts/eligible_area_per_gridcell_and_region.py"
 
 
+rule eligible_area_per_gridcell_and_model_region:
+    message:
+        """
+        Assign eligible wind areas to each {wildcards.dataset_name} grid and
+        Euro-Calliope swiss region
+        """
+    input:
+        script = "scripts/eligible_area_per_gridcell_and_region.py",
+        eligible_areas = "build/{dataset_name}-{cf_or_mwh}-gridded-to-ch-level-1/eligible-areas.csv",
+        model_region_mapping = config["data-sources"]["model-region-mapping"]
+    wildcard_constraints:
+        dataset_name = "((newa)|(cosmo-rea2))"
+    conda: "../envs/geo.yaml"
+    output: "build/{dataset_name}-{cf_or_mwh}-gridded-to-ch-model-regions/eligible-areas.csv"
+    script: "../scripts/eligible_area_per_gridcell_and_region.py"
+
+
 rule area_weighted_aggregate_metrics:
     message:
         """

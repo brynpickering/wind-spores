@@ -7,8 +7,7 @@ data-sources:
     turbine-output: "data/turbine-output.nc"
     turbines-per-site: "data/turbines-per-site.csv"
     ch-shape: "https://biogeo.ucdavis.edu/data/gadm3.6/gpkg/gadm36_CHE_gpkg.zip"
-    eligible-land: "data/eligible-land.tif"
-
+    model-region-mapping: "data/region_mapping.csv"
 newa:
     height-weights:  # importance of different wind heights in fitting a log-law curve. Bigger number = better matching fit to that wind height
         50: 2
@@ -144,3 +143,65 @@ cluster-sync:
     cluster-base-dir: ~/Develop/wind-spores/
     local-results-dir: build/cluster
     max-size: 60m
+
+model-regions:
+    CHE_1:
+        name: Vaud
+        max-clusters: 4  # range: 2-6
+    CHE_2:
+        name: Valais
+        max-clusters: 5  # range: 1-13
+    CHE_3:
+        name: Genève
+        max-clusters: 1  # range: 1-2
+    CHE_4:
+        name: Bern,Neuchâtel
+        max-clusters: 5  # range: 3-9
+    CHE_5:
+        name: Fribourg
+        max-clusters: 3  # range: 1-5
+    CHE_6:
+        name: Solothurn
+        max-clusters: 3  # range: 2-5
+    CHE_7:
+        name: Jura
+        max-clusters: 2  # range: 1-3
+    CHE_8:
+        name: Basel-Stadt,Basel-Landschaft
+        max-clusters: 2  # range: 1-3
+    CHE_9:
+        name: Aargau
+        max-clusters: 3  # range: 1-4
+    CHE_10:
+        name: Zürich,Schaffhausen
+        max-clusters: 3  # range: 1-5
+    CHE_11:
+        name: Glarus
+        max-clusters: 4  # range: 1-7
+    CHE_12:
+        name: St. Gallen,Appenzell Ausserrhoden,Appenzell Innerrhoden
+        max-clusters: 5  # range: 2-6
+    CHE_13:
+        name: Graubünden
+        max-clusters: 5  # range: 1-9
+    CHE_14:
+        name: Thurgau
+        max-clusters: 1  # range: 1-3
+    CHE_15:
+        name: Luzern
+        max-clusters: 4  # range: 1-5
+    CHE_16:
+        name: Uri
+        max-clusters: 4  # range: 1-6
+    CHE_17:
+        name: Schwyz
+        max-clusters: 2  # range: 2-6
+    CHE_18:
+        name: Obwalden,Nidwalden
+        max-clusters: 5  # range: 1-5
+    CHE_19:
+        name: Zug
+        max-clusters: 2  # range: 2-3
+    CHE_20:
+        name: Ticino
+        max-clusters: 2  # range: 1-3

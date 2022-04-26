@@ -1,0 +1,27 @@
+model_region,nuts,gadm,canton_name
+CHE_1,CH011,CHE.24_1,Vaud
+CHE_2,CH012,CHE.23_1,Valais
+CHE_3,CH013,CHE.8_1,Genève
+CHE_4,CH021,CHE.6_1,Bern
+CHE_5,CH022,CHE.7_1,Fribourg
+CHE_6,CH023,CHE.19_1,Solothurn
+CHE_4,CH024,CHE.13_1,Neuchâtel
+CHE_7,CH025,CHE.11_1,Jura
+CHE_8,CH031,CHE.5_1,Basel-Stadt
+CHE_8,CH032,CHE.4_1,Basel-Landschaft
+CHE_9,CH033,CHE.1_1,Aargau
+CHE_10,CH040,CHE.26_1,Zürich
+CHE_11,CH051,CHE.9_1,Glarus
+CHE_10,CH052,CHE.17_1,Schaffhausen
+CHE_12,CH053,CHE.2_1,Appenzell Ausserrhoden
+CHE_12,CH054,CHE.3_1,Appenzell Innerrhoden
+CHE_12,CH055,CHE.16_1,St. Gallen
+CHE_13,CH056,CHE.10_1,Graubünden
+CHE_14,CH057,CHE.20_1,Thurgau
+CHE_15,CH061,CHE.12_1,Luzern
+CHE_16,CH062,CHE.22_1,Uri
+CHE_17,CH063,CHE.18_1,Schwyz
+CHE_18,CH064,CHE.15_1,Obwalden
+CHE_18,CH065,CHE.14_1,Nidwalden
+CHE_19,CH066,CHE.25_1,Zug
+CHE_20,CH070,CHE.21_1,Ticino
