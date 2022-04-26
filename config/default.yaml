@@ -142,7 +142,7 @@ cluster-sync:
     receive-ignore: .syncignore-receive
     cluster-base-dir: ~/Develop/wind-spores/
     local-results-dir: build/cluster
-    max-size: 60m
+    max-size: 100m
 
 model-regions:
     CHE_1:
