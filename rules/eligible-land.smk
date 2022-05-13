@@ -31,12 +31,11 @@ rule tech_slope_thresholds:
     message: "Create binary raster for {wildcards.tech}, whose land use is limited by slope using {threads} threads"
     input:
         scripts = "scripts/slopes.py",
-        slopes_in_europe = config["renewables-potentials"]["data-sources"]["slope"]
+        slopes_in_europe = config["data-sources"]["slope"]
     output: temp("build/data/eudem_slop_3035_europe_{tech}.tif")
     threads: config["renewables-potentials"]["snakemake"]["max-threads"]
     params:
-        max_slope = lambda wildcards: config["renewables-potentials"]["parameters"]["max-slope"][wildcards.tech],
-        max_threads = config["renewables-potentials"]["snakemake"]["max-threads"]
+        max_slope = lambda wildcards: config["renewables-potentials"]["parameters"]["max-slope"][wildcards.tech]
     conda: "../envs/geo.yaml"
     script: "../scripts/slopes.py"
 

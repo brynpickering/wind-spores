@@ -79,6 +79,6 @@ if __name__ == "__main__":
     slope_thresholds_at_full_resolution(
         path_to_eudem_slope_data=snakemake.input.slopes_in_europe,
         max_slope=snakemake.params.max_slope,
-        threads=snakemake.params.max_threads,
+        threads=int(snakemake.threads),
         outpath_to_tech_slope_limit=snakemake.output[0]
     )

@@ -18,7 +18,6 @@ renewables-potentials:
         sonnendach_statistics: https://zenodo.org/record/4091033/files/roof-statistics.csv?download=1
         sonnendach_total_size: https://zenodo.org/record/4091033/files/total-rooftop-area-km2.txt?download=1
         sonnendach_total_yield: https://zenodo.org/record/4091033/files/total-yield-twh.txt?download=1
-        slope: data/eudem_slop_3035_europe.tif
     root-directory: solar-and-wind-potentials # point to the root directory if working directory is not root directory
     crs: "EPSG:4326"
     scope:

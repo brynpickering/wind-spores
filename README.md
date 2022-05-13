@@ -18,11 +18,16 @@ You need [conda](https://conda.io/docs/index.html) to run the analysis. Using co
 
     conda env create -f environment.yaml
 
-You also will need some intermediate data to complete parts of the workflow, where access to this data via an online API is difficult or impossible. You will need to prepare this data yourself before initiating the analysis, then point to the data filepaths in `config/full.yaml`:
+### Data to be retrieved manually
+You will need some intermediate data to complete parts of the workflow, where access to this data via an online API is difficult or impossible. You will need to prepare this data yourself before initiating the analysis.
 
-1. COSMO-REA2 wind speed log law coefficients (`cosmo-rea2-wind-speed-coeffs`). The coefficients "A" and "z" which describe the relationship between vertical height above ground and wind speed at every COSMO-REA2 gridcell, based on the equation ``speed = A log(height) - A log(z)``. For an example of the code to derive these coefficients, see the script `log_law_coefficients.py` where we undertake the proess for the NEWA dataset. The data should be split into one file per year.
+1. [COSMO-REA2 wind speed log law coefficients](https://reanalysis.meteo.uni-bonn.de/?Download_Data___COSMO-REA2). The coefficients "A" and "z" which describe the relationship between vertical height above ground and wind speed at every COSMO-REA2 gridcell, based on the equation ``speed = A log(height) - A log(z)``. For an example of the code to derive these coefficients, see the script `log_law_coefficients.py` where we undertake the proess for the NEWA dataset. The data should be split into one file per year and placed in `data/cosmo_rea2_A_Z/{year}.nc`.
 
-2. Measured hourly turbine electricity generation data, for comparison with simulated data (`turbine-output`). This data is provided to us under a restricted license, so we cannot include it directly in this repository, nor can we host it elsewhere online. If you provide your own data, it should be a netcdf with turbine/farm site name as the data variables, and `datetime` (e.g. `YYYY-mm-DD HH:MM`) and `height` (hub height) as the data dimensions.
+2. Measured hourly turbine electricity generation data, for comparison with simulated data. This data is provided to us under a restricted license, so we cannot include it directly in this repository, nor can we host it elsewhere online. If you provide your own data, it should be a netcdf with turbine/farm site name as the data variables, and `datetime` (e.g. `YYYY-mm-DD HH:MM`) and `height` (hub height) as the data dimensions. To be placed in `data/turbine_power_output_update_for_windspores.nc`.
+
+3. [EU-DEM slope data](https://land.copernicus.eu/imagery-in-situ/eu-dem/eu-dem-v1-0-and-derived-products/). "Full European Coverage" raster to be placed in `.data/eudem_slop_3035_europe.tif`.
+
+Futhermore, there are two files needed by the `solar-and-wind-potentials` submodule (`European Settlement Map 2012, Release 2017, 100m` & `World Exclusive Economic Zones v10`) which should be placed in the data directory of the this workflow (i.e., not in the submodule data directory). Details on the data sources can be found in the submodule README. The capacity factor data referenced in that README is not necessary to run this workflow.
 
 ## Run the analysis
 

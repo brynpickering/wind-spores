@@ -8,6 +8,7 @@ data-sources:
     turbines-per-site: "data/turbines-per-site.csv"
     ch-shape: "https://biogeo.ucdavis.edu/data/gadm3.6/gpkg/gadm36_CHE_gpkg.zip"
     model-region-mapping: "data/region_mapping.csv"
+    slope: data/eudem_slop_3035_europe.tif
 newa:
     height-weights:  # importance of different wind heights in fitting a log-law curve. Bigger number = better matching fit to that wind height
         50: 2
