@@ -6,6 +6,14 @@ This repository contains the workflow to process data for the first half of the 
 
 ## Getting ready
 
+The repository relies on the [`solar-and-wind-potentials`](https://github.com/calliope-project/solar-and-wind-potentials) submodule. Use this command to clone including the submodule:
+
+    git clone --recurse-submodules git@github.com:brynpickering/wind-spores.git
+
+Or, if you have already cloned the repository, first run:
+
+    git submodule update --init --recursive
+
 You need [conda](https://conda.io/docs/index.html) to run the analysis. Using conda, you can create a conda environment from within you can run it:
 
     conda env create -f environment.yaml
