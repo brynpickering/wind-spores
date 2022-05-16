@@ -28,5 +28,6 @@ def get_eligible_land(polygons, path_to_eligible_land):
 
     return polygons
 
+
 def load_ch_shapes(path_to_ch_shapes, level):
     return gpd.read_file(f"zip://{path_to_ch_shapes}!gadm36_CHE.gpkg", layer=int(level))

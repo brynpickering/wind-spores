@@ -11,11 +11,11 @@ from cluster_cf_to_model_regions import (
 
 
 def plot_clusters(
-    path_to_model_region_mapping, path_to_eligible_areas, path_to_turbine_cf,
+    path_to_eligible_areas, path_to_turbine_cf,
     clustering_method, threads, path_to_output
 ):
     eligible_area_cf_ds = get_eligible_area_cf_ds(
-        path_to_model_region_mapping, path_to_eligible_areas, path_to_turbine_cf
+        path_to_eligible_areas, path_to_turbine_cf
     )
 
     region_cf_df = get_region_cf_df(eligible_area_cf_ds, None)
@@ -49,7 +49,6 @@ if __name__ == "__main__":
     plot_clusters(
         path_to_turbine_cf=snakemake.input.turbine_cf,
         path_to_eligible_areas=snakemake.input.eligible_areas,
-        path_to_model_region_mapping=snakemake.input.model_region_mapping,
         clustering_method=snakemake.wildcards.clustering_method,
         threads=snakemake.threads,
         path_to_output=snakemake.output[0]

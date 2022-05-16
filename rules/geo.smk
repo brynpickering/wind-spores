@@ -190,8 +190,7 @@ rule test_clusters:
     input:
         script = "scripts/test_clustering_options.py",
         turbine_cf = "build/{dataset_name}/{turbine_name}.nc",
-        eligible_areas = "build/{dataset_name}-CF-gridded-to-ch-level-1/eligible-areas.csv",
-        model_region_mapping = config["data-sources"]["model-region-mapping"],
+        eligible_areas = "build/{dataset_name}-CF-gridded-to-ch-model-regions/eligible-areas.csv",
     wildcard_constraints:
         dataset_name = "((newa)|(cosmo-rea2))",
     conda: "../envs/default.yaml"

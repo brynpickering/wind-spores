@@ -13,17 +13,14 @@ def get_eligible_area_per_gricell(
     polys_m = geoutil.load_polygons(path_to_polygons, dataset_config, CRS)
 
     ch_level = f"GID_{level}"
-    ch_shape = (
-        gpd.read_file(f"zip://{path_to_ch_shape}!gadm36_CHE.gpkg", layer=int(level))
-        .to_crs(CRS)
-        [[ch_level, "geometry"]]
-    )
+    ch_shape = geoutil.load_ch_shapes(path_to_ch_shape, int(level)).to_crs(CRS)[[ch_level, "geometry"]]
+
     polys_cut_to_ch_shape = gpd.overlay(polys_m.reset_index(), ch_shape)
     polys_cut_to_ch_shape = geoutil.get_eligible_land(polys_cut_to_ch_shape, path_to_eligible_land)
 
     polys_cut_to_ch_shape["area"] = polys_cut_to_ch_shape.area * polys_cut_to_ch_shape["fraction_eligible"]
 
-    polys_cut_to_ch_shape.set_index(["rlon", "rlat", "GID_1"])["area"].to_csv(path_to_output)
+    polys_cut_to_ch_shape.set_index(["rlon", "rlat", ch_level])["area"].to_csv(path_to_output)
 
 
 def ch_level_eligible_area_to_model_regions(

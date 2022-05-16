@@ -30,7 +30,7 @@ def get_geometries(
     label_df, plot_crs
 ):
     polys_m = geoutil.load_polygons(path_to_polygons, dataset_config, plot_crs)
-    ch_level = f"GID_1"
+    ch_level = "GID_1"
     ch_shape = (
         gpd.read_file(f"zip://{path_to_ch_shape}!gadm36_CHE.gpkg", layer=1)
         .to_crs(plot_crs)
